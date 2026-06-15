@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tcaw unblocked games</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --bg-color: #050505;
+            --card-bg: #111111;
+            --neon-green: #00ff41;
+            --neon-glow: 0 0 10px rgba(0, 255, 65, 0.5), 0 0 20px rgba(0, 255, 65, 0.3);
+            --text-main: #eeeeee;
+            --text-muted: #888888;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(5, 5, 5, 0.9);
+            border-bottom: 1px solid var(--neon-green);
+            box-shadow: 0 2px 15px rgba(0, 255, 65, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--neon-green);
+            text-shadow: var(--neon-glow);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .search-bar {
+            flex-grow: 0.5;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            border-radius: 4px;
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-bar:focus {
+            box-shadow: var(--neon-glow);
+        }
+
+        .search-bar::placeholder {
+            color: rgba(0, 255, 65, 0.4);
+        }
+
+        .nav-controls button {
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 8px 16px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-controls button:hover {
+            background: var(--neon-green);
+            color: var(--bg-color);
+            box-shadow: var(--neon-glow);
+        }
+
+        .nav-controls .panic-btn {
+            border-color: #ff003c;
+            color: #ff003c;
+        }
+
+        .nav-controls .panic-btn:hover {
+            background: #ff003c;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px dashed #222;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        /* Game Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .game-card:hover {
+            border-color: var(--neon-green);
+            box-shadow: var(--neon-glow);
+            transform: translateY(-5px);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-bottom: 1px solid #333;
+        }
+
+        .game-card:hover .game-image {
+            border-bottom-color: var(--neon-green);
+        }
+
+        .game-info {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-title {
+            font-size: 18px;
+            color: var(--text-main);
+        }
+
+        .game-category {
+            font-size: 12px;
+            color: var(--neon-green);
+            margin-top: 5px;
+        }
+
+        /* Like Button */
+        .like-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .like-container:hover, .like-container.liked {
+            color: var(--neon-green);
+        }
+
+        .like-icon {
+            font-size: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            border-top: 1px solid #222;
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">TCAW.GAMES</div>
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search terminal...">
+        <div class="nav-controls">
+            <button id="cloakBtn" title="Disguise tab as Google Classroom">🕵️ Stealth Mode</button>
+            <button class="panic-btn" id="panicBtn" title="Press ESC anywhere to panic">⚠️ Panic (ESC)</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>UNRESTRICTED ACCESS</h1>
+        <p>Bypass the firewall. High-speed unblocked games.</p>
+    </header>
+
+    <main class="grid-container" id="gameGrid">
+        <!-- Game 1 -->
+        <div class="game-card" data-title="retro 2d platformer" data-id="game1">
+            <img src="https://placehold.co/600x400/0a0a0a/00ff41?font=monotserrat&text=2D+Platformer" alt="2D Platformer" class="game-image">
+            <div class="game-info">
+                <div>
+                    <div class="game-title">Retro 2D Platformer</div>
+                    <div class="game-category">[ PHYSICS ENGINE ]</div>
+                </div>
+                <div class="like-container" onclick="handleLike(this, 'game1')">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 2 -->
+        <div class="game-card" data-title="snes web emulator retro" data-id="game2">
+            <img src="https://placehold.co/600x400/0a0a0a/00ff41?font=monotserrat&text=SNES+Emulator" alt="SNES Emulator" class="game-image">
+            <div class="game-info">
+                <div>
+                    <div class="game-title">SNES Web Emulator</div>
+                    <div class="game-category">[ RETRO ]</div>
+                </div>
+                <div class="like-container" onclick="handleLike(this, 'game2')">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 3 -->
+        <div class="game-card" data-title="block world sandbox" data-id="game3">
+            <img src="https://placehold.co/600x400/0a0a0a/00ff41?font=monotserrat&text=Block+World" alt="Block World" class="game-image">
+            <div class="game-info">
+                <div>
+                    <div class="game-title">Block World</div>
+                    <div class="game-category">[ SANDBOX ]</div>
+                </div>
+                <div class="like-container" onclick="handleLike(this, 'game3')">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 4 -->
+        <div class="game-card" data-title="arcade claw simulator" data-id="game4">
+            <img src="https://placehold.co/600x400/0a0a0a/00ff41?font=monotserrat&text=Claw+Simulator" alt="Claw Simulator" class="game-image">
+            <div class="game-info">
+                <div>
+                    <div class="game-title">Arcade Claw Simulator</div>
+                    <div class="game-category">[ ARCADE ]</div>
+                </div>
+                <div class="like-container" onclick="handleLike(this, 'game4')">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 5 -->
+        <div class="game-card" data-title="1v1 basketball sports" data-id="game5">
+            <img src="https://placehold.co/600x400/0a0a0a/00ff41?font=monotserrat&text=1v1+Basketball" alt="Basketball" class="game-image">
+            <div class="game-info">
+                <div>
+                    <div class="game-title">1v1 Basketball</div>
+                    <div class="game-category">[ SPORTS ]</div>
+                </div>
+                <div class="like-container" onclick="handleLike(this, 'game5')">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 6 -->
+        <div class="game-card" data-title="geometry dash rhythm" data-id="game6">
+            <img src="https://placehold.co/600x400/0a0a0a/00ff41?font=monotserrat&text=Geo+Dash" alt="Geometry Dash" class="game-image">
+            <div class="game-info">
+                <div>
+                    <div class="game-title">Geo Dash</div>
+                    <div class="game-category">[ RHYTHM ]</div>
+                </div>
+                <div class="like-container" onclick="handleLike(this, 'game6')">
+                    <span class="like-icon">♥</span>
+                    <span class="like-count">0</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>tcaw unblocked games © 2026 | System Online</p>
+    </footer>
+
+    <script>
+        // 1. Live Search Feature
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.game-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                if (title.includes(term)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // 2. Tab Cloaking (Stealth Mode)
+        document.getElementById('cloakBtn').addEventListener('click', () => {
+            document.title = "Classes";
+            let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            link.href = 'https://ssl.gstatic.com/classroom/favicon.png';
+            document.getElementsByTagName('head')[0].appendChild(link);
+            alert("Stealth mode engaged. Tab now looks like Google Classroom.");
+        });
+
+        // 3. Panic Button (Click or ESC key)
+        function triggerPanic() {
+            window.location.replace('https://classroom.google.com');
+        }
+
+        document.getElementById('panicBtn').addEventListener('click', triggerPanic);
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                triggerPanic();
+            }
+        });
+
+        // 4. Persistent Like Counter (uses LocalStorage)
+        function initLikes() {
+            cards.forEach(card => {
+                const id = card.getAttribute('data-id');
+                const likeBtn = card.querySelector('.like-container');
+                const countSpan = card.querySelector('.like-count');
+                
+                // Load existing likes or generate random starting number
+                let currentLikes = localStorage.getItem(`tcaw_likes_${id}`);
+                if (!currentLikes) {
+                    currentLikes = Math.floor(Math.random() * 300) + 15;
+                    localStorage.setItem(`tcaw_likes_${id}`, currentLikes);
+                }
+                
+                countSpan.innerText = currentLikes;
+
+                // Check if user already liked it
+                if (localStorage.getItem(`tcaw_user_liked_${id}`) === 'true') {
+                    likeBtn.classList.add('liked');
+                }
+            });
+        }
+
+        window.handleLike = function(element, gameId) {
+            const countSpan = element.querySelector('.like-count');
+            let currentLikes = parseInt(localStorage.getItem(`tcaw_likes_${gameId}`));
+            let userLiked = localStorage.getItem(`tcaw_user_liked_${gameId}`) === 'true';
+
+            if (userLiked) {
+                // Unlike
+                currentLikes--;
+                element.classList.remove('liked');
+                localStorage.setItem(`tcaw_user_liked_${gameId}`, 'false');
+            } else {
+                // Like
+                currentLikes++;
+                element.classList.add('liked');
+                localStorage.setItem(`tcaw_user_liked_${gameId}`, 'true');
+            }
+
+            localStorage.setItem(`tcaw_likes_${gameId}`, currentLikes);
+            countSpan.innerText = currentLikes;
+        };
+
+        // Initialize likes on page load
+        initLikes();
+    </script>
+</body>
+</html>
