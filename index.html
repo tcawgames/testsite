@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Blockcraft</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; touch-action: none; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #87CEEB; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  canvas { display: block; outline: none; }
+
+  #startScreen {
+    position: fixed; inset: 0; z-index: 100;
+    background: linear-gradient(180deg, #4a7fd6 0%, #6fa8e8 40%, #8fc97a 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  #startScreen .title {
+    font-size: clamp(36px, 9vw, 72px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.35), 0 0 30px rgba(255,255,255,0.2);
+    color: #f5f0c8;
+    -webkit-text-stroke: 2px #3a3015;
+    margin-bottom: 6px;
+  }
+  #startScreen .subtitle {
+    font-size: clamp(12px, 2.5vw, 16px);
+    opacity: 0.85;
+    margin-bottom: 36px;
+    letter-spacing: 1px;
+  }
+  .blocky-btn {
+    font-family: inherit;
+    font-size: clamp(16px, 3vw, 20px);
+    font-weight: 700;
+    color: #fff;
+    background: #6b9c3f;
+    border: 3px solid #4a6e2a;
+    border-bottom: 6px solid #3a5520;
+    box-shadow: inset 0 3px 0 rgba(255,255,255,0.25);
+    padding: 14px 38px;
+    cursor: pointer;
+    margin: 8px;
+    min-width: 220px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    transition: transform 0.05s ease;
+  }
+  .blocky-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
+  .blocky-btn.secondary { background: #8a8a8a; border-color: #5c5c5c; border-bottom-color: #444; }
+  #startScreen .hint {
+    margin-top: 28px; font-size: 13px; opacity: 0.75; text-align: center; max-width: 320px; line-height: 1.5;
+  }
+
+  #loadingScreen {
+    position: fixed; inset: 0; z-index: 90; background: #1a1a1a;
+    display: none; flex-direction: column; align-items: center; justify-content: center; color: #fff;
+  }
+  #loadingScreen .bar-bg { width: 280px; height: 18px; border: 2px solid #555; background: #333; margin-top: 18px; }
+  #loadingScreen .bar-fill { height: 100%; width: 0%; background: #6b9c3f; transition: width 0.15s ease; }
+
+  #hud { position: fixed; inset: 0; z-index: 10; pointer-events: none; display: none; }
+
+  #crosshair {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 22px; height: 22px;
+  }
+  #crosshair::before, #crosshair::after {
+    content: ''; position: absolute; background: rgba(255,255,255,0.85); box-shadow: 0 0 2px rgba(0,0,0,0.6);
+  }
+  #crosshair::before { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
+  #crosshair::after { height: 100%; width: 2px; left: 50%; transform: translateX(-50%); }
+
+  #hotbar {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 4px; background: rgba(0,0,0,0.25); padding: 5px; border-radius: 4px;
+    pointer-events: auto;
+  }
+  .hotslot {
+    width: 48px; height: 48px; background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center; position: relative; border-radius: 2px;
+  }
+  .hotslot.active { border-color: #fff; background: rgba(255,255,255,0.3); box-shadow: 0 0 8px rgba(255,255,255,0.5); }
+  .hotslot .swatch { width: 30px; height: 30px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3); }
+  .hotslot .num { position: absolute; top: 1px; left: 3px; font-size: 9px; color: #fff; opacity: 0.7; }
+
+  #blockLabel {
+    position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%);
+    color: #fff; font-size: 13px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); font-weight: 600;
+    opacity: 0; transition: opacity 0.3s;
+  }
+
+  #infoPanel {
+    position: absolute; top: 12px; left: 12px; color: #fff; font-size: 12px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8); line-height: 1.6; background: rgba(0,0,0,0.25);
+    padding: 8px 12px; border-radius: 4px;
+  }
+
+  #pauseBtn {
+    position: absolute; top: 12px; right: 12px; pointer-events: auto;
+    width: 36px; height: 36px; background: rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 4px; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Mobile touch controls */
+  #touchControls { position: absolute; inset: 0; display: none; pointer-events: none; }
+  .joystick-zone {
+    position: absolute; bottom: 20px; left: 20px; width: 130px; height: 130px;
+    pointer-events: auto;
+  }
+  .joystick-base {
+    position: absolute; width: 100%; height: 100%; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3);
+  }
+  .joystick-stick {
+    position: absolute; width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.45); border: 2px solid rgba(255,255,255,0.6);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .look-zone { position: absolute; top: 0; right: 0; width: 55%; height: 75%; pointer-events: auto; }
+
+  .action-btn {
+    position: absolute; pointer-events: auto; border-radius: 50%;
+    background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.45);
+    color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.6);
+  }
+  #jumpBtn { width: 70px; height: 70px; bottom: 110px; right: 24px; }
+  #downBtn { width: 56px; height: 56px; bottom: 105px; right: 105px; background: rgba(200,150,60,0.35); }
+  #breakBtn { width: 64px; height: 64px; bottom: 30px; right: 110px; background: rgba(220,80,80,0.35); }
+  #placeBtn { width: 64px; height: 64px; bottom: 30px; right: 24px; background: rgba(80,180,80,0.35); }
+  #flyBtn { width: 50px; height: 50px; bottom: 195px; right: 30px; font-size: 10px; background: rgba(80,140,220,0.35); }
+
+  #mobileHotbar { display: none; }
+
+  #pauseMenu {
+    position: fixed; inset: 0; z-index: 95; background: rgba(0,0,0,0.55);
+    display: none; flex-direction: column; align-items: center; justify-content: center; color: #fff;
+  }
+  #pauseMenu .panel { background: #2a2a2a; border: 2px solid #555; padding: 28px 36px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; }
+  #pauseMenu h2 { margin-bottom: 18px; letter-spacing: 1px; }
+
+  @media (hover: none) and (pointer: coarse) {
+    #touchControls { display: block; }
+    #mobileHotbar { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<div id="startScreen">
+  <div class="title">BLOCKCRAFT</div>
+  <div class="subtitle">a tiny voxel sandbox</div>
+  <button class="blocky-btn" id="newWorldBtn">New World</button>
+  <button class="blocky-btn secondary" id="continueBtn" style="display:none;">Continue</button>
+  <div class="hint" id="controlHint">Loading controls…</div>
+</div>
+
+<div id="loadingScreen">
+  <div>Building world…</div>
+  <div class="bar-bg"><div class="bar-fill" id="loadBarFill"></div></div>
+</div>
+
+<div id="pauseMenu">
+  <div class="panel">
+    <h2>Paused</h2>
+    <button class="blocky-btn" id="resumeBtn">Resume</button>
+    <button class="blocky-btn secondary" id="quitBtn">Quit to Title</button>
+  </div>
+</div>
+
+<div id="hud">
+  <div id="crosshair"></div>
+  <div id="infoPanel">
+    <div id="posInfo">x:0 y:0 z:0</div>
+    <div id="fpsInfo">fps: 0</div>
+  </div>
+  <div id="pauseBtn">⏸</div>
+  <div id="blockLabel"></div>
+  <div id="hotbar"></div>
+
+  <div id="touchControls">
+    <div class="joystick-zone" id="moveJoystickZone">
+      <div class="joystick-base"></div>
+      <div class="joystick-stick" id="moveStick"></div>
+    </div>
+    <div class="look-zone" id="lookZone"></div>
+    <div class="action-btn" id="jumpBtn">JUMP</div>
+    <div class="action-btn" id="downBtn" style="display:none;">DOWN</div>
+    <div class="action-btn" id="breakBtn">BREAK</div>
+    <div class="action-btn" id="placeBtn">PLACE</div>
+    <div class="action-btn" id="flyBtn">FLY</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
